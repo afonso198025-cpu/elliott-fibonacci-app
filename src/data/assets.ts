@@ -155,6 +155,11 @@ export const cryptoAssets: Asset[] = [
   createAsset('LTC/USD', 'Litecoin (LTC/USD)', 'crypto', 'crypto'),
   createAsset('ATOM/USD', 'Cosmos (ATOM/USD)', 'crypto', 'crypto'),
   createAsset('FIL/USD', 'Filecoin (FIL/USD)', 'crypto', 'crypto'),
+  createAsset('NEAR/USD', 'NEAR Protocol (NEAR/USD)', 'crypto', 'crypto'),
+  createAsset('TRX/USD', 'Tron (TRX/USD)', 'crypto', 'crypto'),
+  createAsset('SUI/USD', 'Sui (SUI/USD)', 'crypto', 'crypto'),
+  createAsset('SHIB/USD', 'Shiba Inu (SHIB/USD)', 'crypto', 'crypto'),
+  createAsset('PEPE/USD', 'Pepe (PEPE/USD)', 'crypto', 'crypto'),
 ];
 
 export const allAssets: Asset[] = [
