@@ -69,7 +69,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
   const pathPoints = chartData.map(p => `${p.x},${priceToY(p.price)}`).join(' ');
 
   // Get important fib levels to show on chart
-  const fibLines = analyses.flatMap(a =>
+  const rawFibLines = analyses.flatMap(a =>
     a.levels
       .filter(l => l.importance === 'primary')
       .map(l => ({
@@ -79,6 +79,20 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
         color: l.type === 'retracement' ? '#f59e0b' : '#10b981',
       }))
   );
+
+  // Sort by Y and compute label positions that don't overlap (min 16px gap)
+  const sortedFibs = rawFibLines
+    .filter(fl => fl.y > chartTop && fl.y < chartBottom)
+    .sort((a, b) => a.y - b.y);
+
+  const fibLines: (typeof sortedFibs[number] & { labelY: number })[] = [];
+  let lastLabelY = -Infinity;
+  for (const fl of sortedFibs) {
+    const minY = lastLabelY + 16;
+    const labelY = Math.max(fl.y, minY);
+    fibLines.push({ ...fl, labelY });
+    lastLabelY = labelY;
+  }
 
   return (
     <div className="bg-gray-800/50 rounded-xl p-4 overflow-x-auto">
@@ -98,14 +112,14 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
         })}
 
         {/* Fibonacci level lines */}
-        {fibLines.filter(fl => fl.y > chartTop && fl.y < chartBottom).map((fl, idx) => (
+        {fibLines.map((fl, idx) => (
           <g key={`fib-${idx}`}>
             <line
               x1={20} y1={fl.y}
               x2={Math.max(width, 600) - 80} y2={fl.y}
               stroke={fl.color} strokeWidth={1} strokeDasharray="6,3" opacity={0.6}
             />
-            <text x={Math.max(width, 600) - 75} y={fl.y + 3} fill={fl.color} fontSize={11}>
+            <text x={Math.max(width, 600) - 75} y={fl.labelY + 3} fill={fl.color} fontSize={11}>
               {fl.label}
             </text>
           </g>
