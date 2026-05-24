@@ -54,7 +54,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
   const minPrice = Math.min(...allPrices);
   const maxPrice = Math.max(...allPrices);
   const priceRange = maxPrice - minPrice || 1;
-  const padding = priceRange * 0.1;
+  const padding = priceRange * 0.15;
 
   const width = chartData.length * 120 + 120;
   const height = 650;
@@ -125,13 +125,20 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
           const y = priceToY(point.price);
           const isABC = ['A', 'B', 'C'].includes(point.label);
           const color = isABC ? '#3b82f6' : isUptrend ? '#22c55e' : '#ef4444';
+          // Alternate labels: peaks above, troughs below
+          // In uptrend: 1,3,5,B are peaks (label above), 0,2,4,A,C are troughs (label below)
+          // In downtrend: reversed
+          const peakLabels = isUptrend ? ['1','3','5','B'] : ['0','2','4','A','C'];
+          const isPeak = peakLabels.includes(point.label);
+          const labelY = isPeak ? y - 22 : y + 32;
+          const priceY = isPeak ? y - 38 : y + 48;
           return (
             <g key={idx}>
               <circle cx={point.x} cy={y} r={8} fill={color} stroke="#1f2937" strokeWidth={2} />
-              <text x={point.x} y={y - 16} fill={color} fontSize={16} fontWeight="bold" textAnchor="middle">
+              <text x={point.x} y={labelY} fill={color} fontSize={16} fontWeight="bold" textAnchor="middle">
                 {point.label}
               </text>
-              <text x={point.x} y={y + 24} fill="#9ca3af" fontSize={12} textAnchor="middle">
+              <text x={point.x} y={priceY} fill="#9ca3af" fontSize={12} textAnchor="middle">
                 {point.price.toFixed(2)}
               </text>
             </g>
