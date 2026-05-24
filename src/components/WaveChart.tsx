@@ -26,7 +26,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
     labels.forEach((item, idx) => {
       const val = points[item.key];
       if (val !== undefined) {
-        definedPoints.push({ label: item.label, price: val, x: idx * 80 + 40 });
+        definedPoints.push({ label: item.label, price: val, x: idx * 120 + 60 });
       }
     });
 
@@ -56,8 +56,8 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
   const priceRange = maxPrice - minPrice || 1;
   const padding = priceRange * 0.1;
 
-  const width = chartData.length * 80 + 80;
-  const height = 400;
+  const width = chartData.length * 120 + 120;
+  const height = 650;
   const chartTop = 30;
   const chartBottom = height - 30;
   const chartHeight = chartBottom - chartTop;
@@ -90,7 +90,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
           return (
             <g key={pct}>
               <line x1={20} y1={y} x2={Math.max(width, 600) - 20} y2={y} stroke="#374151" strokeWidth={0.5} strokeDasharray="4,4" />
-              <text x={Math.max(width, 600) - 15} y={y + 4} fill="#6b7280" fontSize={10} textAnchor="end">
+              <text x={Math.max(width, 600) - 15} y={y + 4} fill="#6b7280" fontSize={12} textAnchor="end">
                 {price.toFixed(2)}
               </text>
             </g>
@@ -105,7 +105,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
               x2={Math.max(width, 600) - 80} y2={fl.y}
               stroke={fl.color} strokeWidth={1} strokeDasharray="6,3" opacity={0.6}
             />
-            <text x={Math.max(width, 600) - 75} y={fl.y + 3} fill={fl.color} fontSize={9}>
+            <text x={Math.max(width, 600) - 75} y={fl.y + 3} fill={fl.color} fontSize={11}>
               {fl.label}
             </text>
           </g>
@@ -116,7 +116,7 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
           points={pathPoints}
           fill="none"
           stroke={isUptrend ? '#22c55e' : '#ef4444'}
-          strokeWidth={2.5}
+          strokeWidth={3}
           strokeLinejoin="round"
         />
 
@@ -127,11 +127,11 @@ export function WaveChart({ points, analyses, isUptrend }: WaveChartProps) {
           const color = isABC ? '#3b82f6' : isUptrend ? '#22c55e' : '#ef4444';
           return (
             <g key={idx}>
-              <circle cx={point.x} cy={y} r={6} fill={color} stroke="#1f2937" strokeWidth={2} />
-              <text x={point.x} y={y - 14} fill={color} fontSize={14} fontWeight="bold" textAnchor="middle">
+              <circle cx={point.x} cy={y} r={8} fill={color} stroke="#1f2937" strokeWidth={2} />
+              <text x={point.x} y={y - 16} fill={color} fontSize={16} fontWeight="bold" textAnchor="middle">
                 {point.label}
               </text>
-              <text x={point.x} y={y + 20} fill="#9ca3af" fontSize={10} textAnchor="middle">
+              <text x={point.x} y={y + 24} fill="#9ca3af" fontSize={12} textAnchor="middle">
                 {point.price.toFixed(2)}
               </text>
             </g>
